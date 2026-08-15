@@ -54,6 +54,9 @@ bool TileItem::useOn(ItemStack& itemStack, Player& player, const TilePos& pos, F
 
 	Tile* pTile = Tile::tiles[m_tile];
 
+	if (level.m_pRakNetInstance)
+		level.m_pRakNetInstance->send(new PlaceBlockPacket(player.m_EntityID, tp, (TileID)m_tile, face, itemStack.getAuxValue()));
+
 	if (!source.setTileAndData(tp, FullTile(m_tile, getLevelDataForAuxValue(itemStack.getAuxValue()))))
 		return true;
 
@@ -66,9 +69,6 @@ bool TileItem::useOn(ItemStack& itemStack, Player& player, const TilePos& pos, F
 		(pTile->m_pSound->volume + 1.0f) * 0.5f,
 		pTile->m_pSound->pitch * 0.8f
 	);
-
-	if (level.m_pRakNetInstance)
-		level.m_pRakNetInstance->send(new PlaceBlockPacket(player.m_EntityID, tp, (TileID)m_tile, face, itemStack.getAuxValue()));
 
 	player.useItem(itemStack);
 	return true;

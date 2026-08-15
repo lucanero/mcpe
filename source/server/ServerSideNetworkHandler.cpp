@@ -513,6 +513,7 @@ void ServerSideNetworkHandler::handle(const RakNet::RakNetGUID& guid, MovePlayer
 	}
 }
 
+// @TODO: Remove entirely? UseItemPacket fulfills this purpose and clients only need it to render the sound properly
 void ServerSideNetworkHandler::handle(const RakNet::RakNetGUID& guid, PlaceBlockPacket* packet)
 {
 	if (!m_pLevel) return;
@@ -530,6 +531,8 @@ void ServerSideNetworkHandler::handle(const RakNet::RakNetGUID& guid, PlaceBlock
 
 	TileSource& tileSource = player.getTileSource();
 
+	// @BUG:? this never passes due to UseItemPacket placing the tile. Technically gets 'redistributed' inside TileItem->onUse, causing it to appear normal
+	// possibly a vuln to handle this packet on the server to begin with
 	if (!tileSource.mayPlace(tileId, pos, face, player, true))
 		return;
 
