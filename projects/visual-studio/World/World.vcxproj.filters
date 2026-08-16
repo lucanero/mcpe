@@ -833,6 +833,12 @@
     <ClCompile Include="$(MC_ROOT)\source\world\level\Brightness.cpp">
       <Filter>Source Files\Level</Filter>
     </ClCompile>
+    <ClCompile Include="$(MC_ROOT)\source\world\item\BoatItem.cpp">
+      <Filter>Source Files\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MC_ROOT)\source\world\entity\Boat.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MC_ROOT)\source\world\entity\Entity.hpp">
@@ -1500,6 +1506,12 @@
     </ClInclude>
     <ClInclude Include="$(MC_ROOT)\source\world\level\DimensionId.hpp">
       <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MC_ROOT)\source\world\item\BoatItem.hpp">
+      <Filter>Header Files\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MC_ROOT)\source\world\entity\Boat.hpp">
+      <Filter>Header Files\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

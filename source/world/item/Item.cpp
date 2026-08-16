@@ -13,6 +13,7 @@
 
 #include "ArmorItem.hpp"
 #include "BowItem.hpp"
+#include "BoatItem.hpp"
 #include "CameraItem.hpp"
 #include "CoalItem.hpp"
 #include "DoorItem.hpp"
@@ -460,7 +461,7 @@ void Item::initItems()
 		->setIcon(7, 10)
 		->setDescriptionId("minecartFurnace");
 
-	Item::boat = NEW_ITEM(ITEM_BOAT)
+	Item::boat = NEW_X_ITEMN(BoatItem, ITEM_BOAT)
 		->setIcon(8, 8)
 		->setDescriptionId("boat");
 

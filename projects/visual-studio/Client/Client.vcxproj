@@ -185,6 +185,7 @@
     <ClInclude Include="$(MC_ROOT)\source\client\renderer\FoliageColor.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\renderer\GrassColor.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\gui\components\OptionList.hpp" />
+    <ClInclude Include="$(MC_ROOT)\source\client\model\models\BoatModel.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\model\models\ChickenModel.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\model\models\CowModel.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\model\models\CreeperModel.hpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="$(MC_ROOT)\source\client\model\models\SkeletonModel.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\model\models\SpiderModel.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\model\models\ZombieModel.hpp" />
+    <ClInclude Include="$(MC_ROOT)\source\client\renderer\entity\BoatRenderer.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\renderer\entity\ChickenRenderer.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\renderer\entity\CowRenderer.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\client\renderer\entity\CreeperRenderer.hpp" />
@@ -399,6 +401,7 @@
     <ClCompile Include="$(MC_ROOT)\source\client\renderer\FoliageColor.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\renderer\GrassColor.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\gui\components\OptionList.cpp" />
+    <ClCompile Include="$(MC_ROOT)\source\client\model\models\BoatModel.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\model\models\ChickenModel.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\model\models\CowModel.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\model\models\CreeperModel.cpp" />
@@ -407,6 +410,7 @@
     <ClCompile Include="$(MC_ROOT)\source\client\model\models\SheepModel.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\model\models\SkeletonModel.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\model\models\SpiderModel.cpp" />
+    <ClCompile Include="$(MC_ROOT)\source\client\renderer\entity\BoatRenderer.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\renderer\entity\ChickenRenderer.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\renderer\entity\CowRenderer.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\client\renderer\entity\CreeperRenderer.cpp" />

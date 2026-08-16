@@ -202,6 +202,7 @@
     <ClCompile Include="$(MC_ROOT)\source\world\entity\Spider.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\entity\Zombie.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\entity\EntityFactory.cpp" />
+    <ClCompile Include="$(MC_ROOT)\source\world\entity\Boat.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\inventory\ContainerListener.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\inventory\ContainerMenu.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\inventory\Slot.cpp" />
@@ -216,6 +217,7 @@
     <ClCompile Include="$(MC_ROOT)\source\world\inventory\CreativeMenu.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\item\DyeColor.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\item\ToolItem.cpp" />
+    <ClCompile Include="$(MC_ROOT)\source\world\item\BoatItem.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\item\ArmorItem.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\item\HoeItem.cpp" />
     <ClCompile Include="$(MC_ROOT)\source\world\item\SeedItem.cpp" />
@@ -442,6 +444,7 @@
     <ClInclude Include="$(MC_ROOT)\source\world\item\DyeColor.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\world\item\Tool.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\world\item\ToolItem.hpp" />
+    <ClInclude Include="$(MC_ROOT)\source\world\item\BoatItem.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\world\item\crafting\FurnaceRecipes.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\world\item\crafting\Recipe.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\world\item\crafting\Recipes.hpp" />
@@ -509,6 +512,7 @@
     <ClInclude Include="$(MC_ROOT)\source\world\level\TileTickingQueue.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\world\entity\MobSpawnerData.hpp" />
     <ClInclude Include="$(MC_ROOT)\source\world\level\DimensionId.hpp" />
+    <ClInclude Include="$(MC_ROOT)\source\world\entity\Boat.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NBT\NBT.vcxproj">

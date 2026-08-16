@@ -24,6 +24,7 @@
 #include "ChickenRenderer.hpp"
 #include "CreeperRenderer.hpp"
 #include "SpiderRenderer.hpp"
+#include "BoatRenderer.hpp"
 #include "ArrowRenderer.hpp"
 #include "RocketRenderer.hpp"
 #include "SquidRenderer.hpp"
@@ -85,6 +86,7 @@ EntityRenderDispatcher::EntityRenderDispatcher()
 	_addRenderer(Entity::RENDER_ROCKET,       new RocketRenderer());
 	_addRenderer(Entity::RENDER_FIREBALL,     new FireballRenderer());
 	_addRenderer(Entity::RENDER_FISHING_HOOK, new FishingHookRenderer());
+	_addRenderer(Entity::RENDER_BOAT,         new BoatRenderer());
 }
 
 EntityRenderDispatcher::~EntityRenderDispatcher()
