@@ -137,6 +137,8 @@ bool Minecart::interact(Player* player)
 
         break;
     }
+    default:
+        break;
     }
 
     return true;
@@ -191,11 +193,12 @@ void Minecart::_adjustVelocity(const TilePos& tp, bool& canPush)
         case RailTile::NORTH_SOUTH_ABOVE:
             m_vel.z -= C_GRAVITY;
             break;
+        default:
+            break;
     }
 
     const TilePos* exits = EXITS[data];
     Vec3 exitDelta = exits[1] - exits[0];
-    float exitSqrt = Mth::sqrt(exitDelta.x * exitDelta.x + exitDelta.z * exitDelta.z);
     float var18 = m_vel.x * exitDelta.x + m_vel.z * exitDelta.z;
     if (var18 < 0.0f)
     {
@@ -203,9 +206,10 @@ void Minecart::_adjustVelocity(const TilePos& tp, bool& canPush)
         exitDelta.z = -exitDelta.z;
     }
 
+    float exitLength = Mth::sqrt(exitDelta.x * exitDelta.x + exitDelta.z * exitDelta.z);
     float velDist = Mth::sqrt(m_vel.x * m_vel.x + m_vel.z * m_vel.z);
-    m_vel.x = velDist * exitDelta.x / exitSqrt;
-    m_vel.z = velDist * exitDelta.z / exitSqrt;
+    m_vel.x = velDist * exitDelta.x / exitLength;
+    m_vel.z = velDist * exitDelta.z / exitLength;
     if (RailTile::isPoweredRail(rail) && !hasPower)
     {
         float velDist = Mth::sqrt(m_vel.x * m_vel.x + m_vel.z * m_vel.z);
@@ -567,6 +571,8 @@ void Minecart::addAdditionalSaveData(CompoundTag& tag) const
     case TYPE_CHEST:
         SimpleContainer::save(tag);
         break;
+    default:
+        break;
     }
 }
 
@@ -582,6 +588,8 @@ void Minecart::readAdditionalSaveData(const CompoundTag& tag)
         break;
     case TYPE_CHEST:
         SimpleContainer::load(tag);
+        break;
+    default:
         break;
     }
 }
