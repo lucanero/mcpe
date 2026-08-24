@@ -1239,7 +1239,8 @@ bool TileRenderer::tesselateFenceInWorld(Tile* tile, const TilePos& pos)
 bool TileRenderer::tesselateRailInWorld(Tile* tile, const TilePos& pos)
 {
 	static constexpr float C_RATIO = 1.0f / 256.0f;
-	static constexpr float r = 0.0625f;
+	static constexpr float C_RAIL_HEIGHT = 0.0625f;
+	static constexpr float C_TEX_SZ = 15.99f;
 
 	Tesselator& t = Tesselator::instance;
 	TileData data = m_pTileSource->getData(pos);
@@ -1255,22 +1256,14 @@ bool TileRenderer::tesselateRailInWorld(Tile* tile, const TilePos& pos)
 	int xt = (tex & 15) << 4;
 	int yt = tex & 240;
 	float u0 = xt * C_RATIO;
-	float u1 = (xt + 15.99f) * C_RATIO;
+	float u1 = (xt + C_TEX_SZ) * C_RATIO;
 	float v0 = yt * C_RATIO;
-	float v1 = (yt + 15.99f) * C_RATIO;
+	float v1 = (yt + C_TEX_SZ) * C_RATIO;
 	
-	float x0 = (float)(pos.x + 1);
-	float x1 = (float)(pos.x + 1);
-	float x2 = (float)(pos.x + 0);
-	float x3 = (float)(pos.x + 0);
-	float z0 = (float)(pos.z + 0);
-	float z1 = (float)(pos.z + 1);
-	float z2 = (float)(pos.z + 1);
-	float z3 = (float)(pos.z + 0);
-	float y0 = (float)pos.y + r;
-	float y1 = (float)pos.y + r;
-	float y2 = (float)pos.y + r;
-	float y3 = (float)pos.y + r;
+	Vec3 p0 = Vec3(pos.x + 1.0f, pos.y + C_RAIL_HEIGHT, (float)pos.z);
+	Vec3 p1 = Vec3(pos.x + 1.0f, pos.y + C_RAIL_HEIGHT, pos.z + 1.0f);
+	Vec3 p2 = Vec3((float)pos.x, pos.y + C_RAIL_HEIGHT, pos.z + 1.0f);
+	Vec3 p3 = Vec3((float)pos.x, pos.y + C_RAIL_HEIGHT, (float)pos.z);
 	if (faceData != RailTile::WEST_EAST 
 		&& faceData != RailTile::WEST_EAST_ABOVE 
 		&& faceData != RailTile::EAST_WEST_ABOVE 
@@ -1278,49 +1271,49 @@ bool TileRenderer::tesselateRailInWorld(Tile* tile, const TilePos& pos)
 	{
 		if (faceData == RailTile::WEST_NORTH)
 		{
-			x0 = x1 = (float)(pos.x + 0);
-			x2 = x3 = (float)(pos.x + 1);
-			z0 = z3 = (float)(pos.z + 1);
-			z1 = z2 = (float)(pos.z + 0);
+			p0.x = p1.x = (float)(pos.x);
+			p2.x = p3.x = (float)(pos.x + 1);
+			p0.z = p3.z = (float)(pos.z + 1);
+			p1.z = p2.z = (float)(pos.z);
 		}
 		else if (faceData == RailTile::EAST_NORTH)
 		{
-			x0 = x3 = (float)(pos.x + 0);
-			x1 = x2 = (float)(pos.x + 1);
-			z0 = z1 = (float)(pos.z + 0);
-			z2 = z3 = (float)(pos.z + 1);
+			p0.x = p3.x = (float)(pos.x);
+			p1.x = p2.x = (float)(pos.x + 1);
+			p0.z = p1.z = (float)(pos.z);
+			p2.z = p3.z = (float)(pos.z + 1);
 		}
 	}
 	else
 	{
-		x0 = x3 = (float)(pos.x + 1);
-		x1 = x2 = (float)(pos.x + 0);
-		z0 = z1 = (float)(pos.z + 1);
-		z2 = z3 = (float)(pos.z + 0);
+		p0.x = p3.x = (float)(pos.x + 1);
+		p1.x = p2.x = (float)(pos.x);
+		p0.z = p1.z = (float)(pos.z + 1);
+		p2.z = p3.z = (float)(pos.z);
 	}
 
 	if (faceData != RailTile::WEST_EAST_ABOVE && faceData != RailTile::SOUTH_NORTH_ABOVE)
 	{
 		if (faceData == RailTile::EAST_WEST_ABOVE || faceData == RailTile::NORTH_SOUTH_ABOVE)
 		{
-			++y1;
-			++y2;
+			++p1.y;
+			++p2.y;
 		}
 	}
 	else
 	{
-		++y0;
-		++y3;
+		++p0.y;
+		++p3.y;
 	}
 
-	t.vertexUV(x0, y0, z0, u1, v0);
-	t.vertexUV(x1, y1, z1, u1, v1);
-	t.vertexUV(x2, y2, z2, u0, v1);
-	t.vertexUV(x3, y3, z3, u0, v0);
-	t.vertexUV(x3, y3, z3, u0, v0);
-	t.vertexUV(x2, y2, z2, u0, v1);
-	t.vertexUV(x1, y1, z1, u1, v1);
-	t.vertexUV(x0, y0, z0, u1, v0);
+	t.vertexUV(p0, u1, v0);
+	t.vertexUV(p1, u1, v1);
+	t.vertexUV(p2, u0, v1);
+	t.vertexUV(p3, u0, v0);
+	t.vertexUV(p3, u0, v0);
+	t.vertexUV(p2, u0, v1);
+	t.vertexUV(p1, u1, v1);
+	t.vertexUV(p0, u1, v0);
 	return true;
 }
 
