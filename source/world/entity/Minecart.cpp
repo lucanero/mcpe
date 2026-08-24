@@ -497,16 +497,14 @@ void Minecart::remove()
         ItemStack& stack = getItem(i);
         if (!stack.isEmpty())
         {
-            float randX = sharedRandom.nextFloat() * 0.8f + 0.1f;
-            float randY = sharedRandom.nextFloat() * 0.8f + 0.1f;
-            float randZ = sharedRandom.nextFloat() * 0.8f + 0.1f;
+            Vec3 rand = Vec3(sharedRandom.nextFloat(), sharedRandom.nextFloat(), sharedRandom.nextFloat()) * 0.8f + 0.1f;
 
             while (stack.m_count > 0)
             {
                 int itemCount = Mth::Min(sharedRandom.nextInt(21) + 10, stack.m_count);
                 stack.m_count -= itemCount;
 
-                ItemEntity* ent = new ItemEntity(*m_pLevel, Vec3(m_pos.x + randX, m_pos.y + randY, m_pos.z + randZ), ItemStack(stack.getId(), itemCount, stack.getAuxValue()));
+                ItemEntity* ent = new ItemEntity(*m_pLevel, m_pos + rand, ItemStack(stack.getId(), itemCount, stack.getAuxValue()));
                 constexpr float SPEED = 0.05f;
                 ent->m_vel.x = sharedRandom.nextGaussian() * SPEED;
                 ent->m_vel.y = sharedRandom.nextGaussian() * SPEED + 0.2f;
@@ -657,13 +655,10 @@ void Minecart::push(Entity* ent)
 {
     if (m_pLevel->m_bIsClientSide || ent == getRider()) return;
     
-    if (m_type == TYPE_DEFAULT
-        && (m_vel.x * m_vel.x + m_vel.z * m_vel.z) > 0.01f
-        && ent->getDescriptor().hasCategory(EntityCategories::MOB)
-        && !ent->isPlayer()
-        && !getRider()
-        && !getRiding())
-        ent->ride(this);
+    if (m_type == TYPE_DEFAULT && (m_vel.x * m_vel.x + m_vel.z * m_vel.z) > 0.01f)
+        if (ent->getDescriptor().hasCategory(EntityCategories::MOB) && !ent->isPlayer())
+            if (!getRider() && !getRiding())
+                ent->ride(this);
 
     float xDiff = ent->m_pos.x - m_pos.x;
     float zDiff = ent->m_pos.z - m_pos.z;
