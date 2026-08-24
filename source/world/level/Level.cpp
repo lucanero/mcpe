@@ -876,44 +876,6 @@ bool Level::setTile(const TilePos& pos, TileID tile, TileChange updateFlags)
 	return setTileAndData(pos, FullTile(tile, 0), updateFlags);
 }
 
-bool Level::setData(const TilePos& pos, TileData data, TileChange updateFlags)
-{
-	//@BUG: checking x >= C_MAX_X, but not z >= C_MAX_Z.
-	if (pos.x < C_MIN_X || pos.z < C_MIN_Z || pos.x >= C_MAX_X || pos.z > C_MAX_Z || pos.y < C_MIN_Y || pos.y >= C_MAX_Y)
-		// there's nothing out there!
-		return false;
-
-	LevelChunk* pChunk = getChunk(pos);
-	if (!pChunk)
-		return false;
-
-	bool result = pChunk->setData(pos, data);
-	if (result)
-	{
-		TileID tileId = pChunk->getTile(pos);
-
-		if (updateFlags.isUpdateListeners() && (!m_bIsClientSide || !updateFlags.isUpdateListenersServerOnly()))
-		{
-			// Send update to level listeners
-			sendTileUpdated(pos);
-		}
-		if (!m_bIsClientSide && updateFlags.isUpdateNeighbors())
-		{
-			// Update neighbors
-			tileUpdated(pos, tileId);
-		}
-	}
-
-	return result;
-
-	/*if (setDataNoUpdate(pos, data))
-	{
-		tileUpdated(pos, getTile(pos));
-		return true;
-	}
-	return false;*/
-}
-
 void Level::fireTilesDirty(const TilePos& min, const TilePos& max)
 {
 	for (std::vector<LevelListener*>::iterator it = m_levelListeners.begin(); it != m_levelListeners.end(); it++)
@@ -1687,11 +1649,6 @@ void Level::removeListener(LevelListener* listener)
 void Level::addListener(LevelListener* listener)
 {
 	m_levelListeners.push_back(listener);
-}
-
-void Level::tickAfterDelay(const TilePos& tilePos, TileID d, int delay)
-{
-	m_tileTickingQueue.add(*this, tilePos, d, delay);
 }
 
 void Level::tickPendingTicks(bool b)

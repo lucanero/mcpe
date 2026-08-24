@@ -100,7 +100,6 @@ public:
 	bool setTileNoUpdate(const TilePos& pos, TileID tile) override;
 	bool setTileAndData(const TilePos& pos, const FullTile& tile, TileChange updateFlags = TileChange::UPDATE_ALL) override;
 	bool setTile(const TilePos& pos, TileID tile, TileChange updateFlags = TileChange::UPDATE_ALL) override;
-	bool setData(const TilePos& pos, TileData data, TileChange updateFlags = TileChange::UPDATE_ALL);
 	void sendTileUpdated(const TilePos& pos);
 	void tileUpdated(const TilePos& pos, TileID tile);
 	void updateNeighborsAt(const TilePos& pos, TileID tile) override;
@@ -155,7 +154,6 @@ public:
 	void tickPendingTicks(bool b);
 	void tickTiles();
 	void tickEntities();
-	void tickAfterDelay(const TilePos& tilePos, TileID tileId, int delay);
 	void takePicture(TripodCamera* pCamera, Entity* pOwner);
 	void addParticle(const std::string& name, const Vec3& pos, const Vec3& dir = Vec3::ZERO);
 	void playSound(Entity*, const std::string& name, float volume = 1.0f, float pitch = 1.0f);

@@ -92,7 +92,7 @@ void RailTile::setPlacedBy(const TilePos& pos, Mob& mob)
 
 	int rot = Mth::floor(0.5f + (mob.m_rot.yaw * 4.0f / 360.0f)) & 3;
 	if (rot == 1 || rot == 3)
-		source.getLevel().setData(pos, RailTile::WEST_EAST);
+		source.getLevel().setTileAndData(pos, FullTile(m_ID, RailTile::WEST_EAST));
 
 	//@NOTE: neighborChanged is called first in the original, but this was causing problems with powered rails being unpowered, certainly it's called for some reason after setPlacedBy
 	_updateDir(source, pos, true);
@@ -239,9 +239,9 @@ bool RailTile::_updatePower(TileSource& source, const TilePos& pos, TileData dat
 	hasSignal = hasSignal || _applyPower(source, pos, data, true, 0) || _applyPower(source, pos, data, false, 0);
 	
 	if (hasSignal && !getPowered(data))
-		source.getLevel().setData(pos, faceData | 8);
+		source.getLevel().setTileAndData(pos, FullTile(m_ID, faceData | C_POWERED_BIT));
 	else if (!hasSignal && getPowered(data))
-		source.getLevel().setData(pos, faceData);
+		source.getLevel().setTileAndData(pos, FullTile(m_ID, faceData));
 	else
 		return false;
 

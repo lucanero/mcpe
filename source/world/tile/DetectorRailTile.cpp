@@ -57,17 +57,17 @@ void DetectorRailTile::_setStateIfMinecartInteractsWithRail(TileSource& source, 
 	{
 		if (!powered)
 		{
-			level.setData(pos, data | C_POWERED_BIT);
+			level.setTileAndData(pos, FullTile(m_ID, data | C_POWERED_BIT));
 			source.updateNeighborsAt(pos, m_ID);
 			source.updateNeighborsAt(pos.below(), m_ID);
 			source.fireTilesDirty(pos, pos);
 		}
-
-		level.tickAfterDelay(pos, m_ID, getTickDelay());
+		
+		level.getTickQueue(pos)->add(level, pos, m_ID, getTickDelay());
 	}
 	else if (powered)
 	{
-		level.setData(pos, data & 7);
+		level.setTileAndData(pos, FullTile(m_ID, data & 7));
 		source.updateNeighborsAt(pos, m_ID);
 		source.updateNeighborsAt(pos.below(), m_ID);
 		source.fireTilesDirty(pos, pos);

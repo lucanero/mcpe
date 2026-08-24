@@ -32,36 +32,27 @@ void MinecartRenderer::render(const Entity& entity, const Vec3& pos, float rot, 
     Vec3 smoothPos = cart.m_oPos.interpolateTo(cart.m_pos, a);
     float smoothX = Mth::Lerp(cart.m_oRot.pitch, cart.m_rot.pitch, a);
 
-    Vec3* railPos = cart.getOnRailPos(smoothPos);
-    if (railPos)
+    Vec3 railPos = Vec3::ZERO;
+    if (cart.getOnRailPos(smoothPos, railPos))
     {
         constexpr float r = 0.3f;
-        Vec3* p0 = cart.getPosOffs(smoothPos, r);
-        Vec3* p1 = cart.getPosOffs(smoothPos, -r);
-        if (!p0)
-            p0 = railPos;
+        Vec3 p0 = Vec3(railPos);
+        Vec3 p1 = Vec3(railPos);
+        cart.getPosOffs(smoothPos, r, p0);
+        cart.getPosOffs(smoothPos, -r, p1);
 
-        if (!p1)
-            p1 = railPos;
-
-        cPos.x += railPos->x - smoothPos.x;
-        cPos.y += (p0->y + p1->y) / 2.0f - smoothPos.y;
-        cPos.z += railPos->z - smoothPos.z;
-        Vec3 dir = *p1 - *p0;
+        cPos.x += railPos.x - smoothPos.x;
+        cPos.y += (p0.y + p1.y) / 2.0f - smoothPos.y;
+        cPos.z += railPos.z - smoothPos.z;
+        Vec3 dir = p1 - p0;
         if (dir.length() != 0.0f)
         {
             dir = dir.normalize();
             rot = Mth::atan2(dir.z, dir.x) * 180.0f / M_PI;
             smoothX = Mth::atan(dir.y) * 73.0f;
         }
-
-        if (railPos != p0)
-            SAFE_DELETE(p0);
-        if (railPos != p1)
-            SAFE_DELETE(p1);
-        SAFE_DELETE(railPos);
     }
-
+    
     matrix->translate(cPos);
     matrix->rotate(180.0f - rot, Vec3::UNIT_Y);
     matrix->rotate(-smoothX, Vec3::UNIT_Z);

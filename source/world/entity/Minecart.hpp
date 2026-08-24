@@ -13,6 +13,7 @@ private:
 	void _init();
 	void _adjustVelocity(const TilePos& tp, bool& canPush);
 	void _adjustRotation();
+	void _tryConsumeFuel();
 
 public:
 	enum Type
@@ -37,8 +38,8 @@ public:
 	bool hurt(Entity*, int) override;
 	void animateHurt() override;
 	void remove() override;
-	Vec3* getPosOffs(const Vec3&, float) const;
-	Vec3* getOnRailPos(const Vec3&) const;
+	bool getPosOffs(const Vec3&, float, Vec3&) const;
+	bool getOnRailPos(const Vec3&, Vec3&) const;
 	void push(Entity*) override;
 	void lerpTo(const Vec3& pos, const Rot2& rot, int steps) override;
 	void lerpMotion(const Vec3& vel) override;

@@ -129,7 +129,7 @@ void Rail::connectTo(Rail& other)
     if (m_bPowered)
         newData = (m_pLevel->getData(m_pos) & C_POWERED_BIT) | newData;
 
-    m_pLevel->setData(m_pos, newData);
+    m_pLevel->setTileAndData(m_pos, FullTile(m_pLevel->getTile(m_pos), newData));
 }
 
 bool Rail::hasNeighborRail(const TilePos& p)
@@ -157,53 +157,53 @@ void Rail::place(bool hasSignal, bool checkNeighbors)
     bool s = hasNeighborRail(m_pos.south());
     bool w = hasNeighborRail(m_pos.west());
     bool e = hasNeighborRail(m_pos.east());
-
+    
     int newData = -1;
-    if ((n || s) && !w && !e) newData = 0;
-    if ((w || e) && !n && !s) newData = 1;
+    if ((n || s) && !w && !e) newData = RailTile::NORTH_SOUTH;
+    if ((w || e) && !n && !s) newData = RailTile::WEST_EAST;
 
     if (!m_bPowered)
     {
-        if (s && e && !n && !w) newData = 6;
-        if (s && w && !n && !e) newData = 7;
-        if (n && w && !s && !e) newData = 8;
-        if (n && e && !s && !w) newData = 9;
+        if (s && e && !n && !w) newData = RailTile::EAST_SOUTH;
+        if (s && w && !n && !e) newData = RailTile::WEST_SOUTH;
+        if (n && w && !s && !e) newData = RailTile::WEST_NORTH;
+        if (n && e && !s && !w) newData = RailTile::EAST_NORTH;
     }
 
     if (newData == -1)
     {
-        if (n || s) newData = 0;
-        if (w || e) newData = 1;
+        if (n || s) newData = RailTile::NORTH_SOUTH;
+        if (w || e) newData = RailTile::WEST_EAST;
 
         if (!m_bPowered)
         {
             if (hasSignal)
             {
-                if (s && e) newData = 6;
-                if (w && s) newData = 7;
-                if (e && n) newData = 9;
-                if (n && w) newData = 8;
+                if (s && e) newData = RailTile::EAST_SOUTH;
+                if (w && s) newData = RailTile::WEST_SOUTH;
+                if (e && n) newData = RailTile::EAST_NORTH;
+                if (n && w) newData = RailTile::WEST_NORTH;
             }
             else
             {
-                if (n && w) newData = 8;
-                if (e && n) newData = 9;
-                if (w && s) newData = 7;
-                if (s && e) newData = 6;
+                if (n && w) newData = RailTile::WEST_NORTH;
+                if (e && n) newData = RailTile::EAST_NORTH;
+                if (w && s) newData = RailTile::WEST_SOUTH;
+                if (s && e) newData = RailTile::EAST_SOUTH;
             }
         }
     }
 
-    if (newData == 0)
+    if (newData == RailTile::NORTH_SOUTH)
     {
-        if (RailTile::hasRail(*m_pLevel, TilePos(m_pos.x, m_pos.y + 1, m_pos.z - 1))) newData = 4;
-        if (RailTile::hasRail(*m_pLevel, TilePos(m_pos.x, m_pos.y + 1, m_pos.z + 1))) newData = 5;
+        if (RailTile::hasRail(*m_pLevel, TilePos(m_pos.x, m_pos.y + 1, m_pos.z - 1))) newData = RailTile::SOUTH_NORTH_ABOVE;
+        if (RailTile::hasRail(*m_pLevel, TilePos(m_pos.x, m_pos.y + 1, m_pos.z + 1))) newData = RailTile::NORTH_SOUTH_ABOVE;
     }
 
-    if (newData == 1)
+    if (newData == RailTile::WEST_EAST)
     {
-        if (RailTile::hasRail(*m_pLevel, TilePos(m_pos.x + 1, m_pos.y + 1, m_pos.z))) newData = 2;
-        if (RailTile::hasRail(*m_pLevel, TilePos(m_pos.x - 1, m_pos.y + 1, m_pos.z))) newData = 3;
+        if (RailTile::hasRail(*m_pLevel, TilePos(m_pos.x + 1, m_pos.y + 1, m_pos.z))) newData = RailTile::WEST_EAST_ABOVE;
+        if (RailTile::hasRail(*m_pLevel, TilePos(m_pos.x - 1, m_pos.y + 1, m_pos.z))) newData = RailTile::EAST_WEST_ABOVE;
     }
 
     if (newData < 0)
@@ -216,7 +216,7 @@ void Rail::place(bool hasSignal, bool checkNeighbors)
 
     if (checkNeighbors || m_pLevel->getData(m_pos) != newData)
     {
-        m_pLevel->setData(m_pos, newData);
+        m_pLevel->setTileAndData(m_pos, FullTile(m_pLevel->getTile(m_pos), newData));
         for (std::vector<TilePos>::iterator it = m_connections.begin(); it != m_connections.end(); ++it)
         {
             const TilePos& conn = *it;
@@ -239,43 +239,43 @@ void Rail::updateConnections(TileData data)
 
     switch (data)
     {
-    case 0:
+    case RailTile::NORTH_SOUTH:
         m_connections.push_back(m_pos.north());
         m_connections.push_back(m_pos.south());
         break;
-    case 1:
+    case RailTile::WEST_EAST:
         m_connections.push_back(m_pos.west());
         m_connections.push_back(m_pos.east());
         break;
-    case 2:
+    case RailTile::WEST_EAST_ABOVE:
         m_connections.push_back(m_pos.west());
         m_connections.push_back(m_pos.east().above());
         break;
-    case 3:
+    case RailTile::EAST_WEST_ABOVE:
         m_connections.push_back(m_pos.west().above());
         m_connections.push_back(m_pos.east());
         break;
-    case 4:
+    case RailTile::SOUTH_NORTH_ABOVE:
         m_connections.push_back(m_pos.north().above());
         m_connections.push_back(m_pos.south());
         break;
-    case 5:
+    case RailTile::NORTH_SOUTH_ABOVE:
         m_connections.push_back(m_pos.north());
         m_connections.push_back(m_pos.south().above());
         break;
-    case 6:
+    case RailTile::EAST_SOUTH:
         m_connections.push_back(m_pos.east());
         m_connections.push_back(m_pos.south());
         break;
-    case 7:
+    case RailTile::WEST_SOUTH:
         m_connections.push_back(m_pos.west());
         m_connections.push_back(m_pos.south());
         break;
-    case 8:
+    case RailTile::WEST_NORTH:
         m_connections.push_back(m_pos.west());
         m_connections.push_back(m_pos.north());
         break;
-    case 9:
+    case RailTile::EAST_NORTH:
         m_connections.push_back(m_pos.east());
         m_connections.push_back(m_pos.north());
         break;
