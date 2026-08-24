@@ -199,8 +199,8 @@ void Minecart::_adjustVelocity(const TilePos& tp, bool& canPush)
 
     const TilePos* exits = EXITS[data];
     Vec3 exitDelta = exits[1] - exits[0];
-    float var18 = m_vel.x * exitDelta.x + m_vel.z * exitDelta.z;
-    if (var18 < 0.0f)
+    float distFromExit = m_vel.x * exitDelta.x + m_vel.z * exitDelta.z;
+    if (distFromExit < 0.0f)
     {
         exitDelta.x = -exitDelta.x;
         exitDelta.z = -exitDelta.z;
