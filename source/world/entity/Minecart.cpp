@@ -124,11 +124,6 @@ bool Minecart::interact(Player* player)
         if (heldItem && heldItem.getId() == Item::coal->m_itemID)
         {
             heldItem.shrink(1);
-            //if (--heldItem.m_count == 0) {
-                // TODO: Verify not needed
-                //player->m_pInventory->setSelectedItem(ItemStack::EMPTY);
-            //}
-
             m_fuel += 1200;
         }
 
