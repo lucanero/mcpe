@@ -1271,25 +1271,25 @@ bool TileRenderer::tesselateRailInWorld(Tile* tile, const TilePos& pos)
 	{
 		if (faceData == RailTile::WEST_NORTH)
 		{
-			p0.x = p1.x = (float)(pos.x);
-			p2.x = p3.x = (float)(pos.x + 1);
-			p0.z = p3.z = (float)(pos.z + 1);
-			p1.z = p2.z = (float)(pos.z);
+			p0.x = p1.x = pos.x;
+			p2.x = p3.x = pos.x + 1.0f;
+			p0.z = p3.z = pos.z + 1.0f;
+			p1.z = p2.z = pos.z;
 		}
 		else if (faceData == RailTile::EAST_NORTH)
 		{
-			p0.x = p3.x = (float)(pos.x);
-			p1.x = p2.x = (float)(pos.x + 1);
-			p0.z = p1.z = (float)(pos.z);
-			p2.z = p3.z = (float)(pos.z + 1);
+			p0.x = p3.x = pos.x;
+			p1.x = p2.x = pos.x + 1.0f;
+			p0.z = p1.z = pos.z;
+			p2.z = p3.z = pos.z + 1.0f;
 		}
 	}
 	else
 	{
-		p0.x = p3.x = (float)(pos.x + 1);
-		p1.x = p2.x = (float)(pos.x);
-		p0.z = p1.z = (float)(pos.z + 1);
-		p2.z = p3.z = (float)(pos.z);
+		p0.x = p3.x = pos.x + 1.0f;
+		p1.x = p2.x = pos.x;
+		p0.z = p1.z = pos.z + 1.0f;
+		p2.z = p3.z = pos.z;
 	}
 
 	if (faceData != RailTile::WEST_EAST_ABOVE && faceData != RailTile::SOUTH_NORTH_ABOVE)
