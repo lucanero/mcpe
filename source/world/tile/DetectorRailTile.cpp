@@ -47,7 +47,7 @@ void DetectorRailTile::_setStateIfMinecartInteractsWithRail(TileSource& source, 
 {
 	bool powered = isPowered(data);
 	bool foundCart = false;
-	constexpr float cartSize = 2.0f / 16.0f;
+	constexpr float cartSize = 0.125f;
 	Entity::Vector minecarts = source.getLevelConst().getEntitiesOfCategory(EntityCategories::MINECART, AABB(pos.x + cartSize, pos.y, pos.z + cartSize, pos.x + 1 - cartSize, pos.y + 0.25, pos.z + 1 - cartSize));
 	if (minecarts.size() > 0)
 		foundCart = true;
